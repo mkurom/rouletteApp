@@ -15,10 +15,12 @@ class RoulettePage extends StatefulWidget {
 
 class _RoulettePageState extends State<RoulettePage>
     with SingleTickerProviderStateMixin {
-  final List<charts.Series<Item, String>> _series = [];
+  final List<charts.Series<Item, String>> _outData = [];
+  final List<charts.Series<Item, String>> _inData = [];
 
   bool animate = false;
-  double angle = 0;
+  double outAngle = 0;
+  double inAngle = 0;
 
   late AnimationController controller;
 
@@ -46,21 +48,50 @@ class _RoulettePageState extends State<RoulettePage>
       body: Container(
         child: Column(
           children: [
-            RotationTransition(
-              turns: Tween(begin: 0.0, end: 10.0).animate(controller),
-              child: Transform.rotate(
-                angle: angle,
-                child: Container(
-                  width: 500,
-                  height: 500,
-                  child: Center(
-                    child: charts.PieChart(
-                      _series,
-                      animate: animate,
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                RotationTransition(
+                  turns: Tween(begin: 0.0, end: 5.0).animate(controller),
+                  child: Transform.rotate(
+                    angle: outAngle,
+                    child: Container(
+                      width: 500,
+                      height: 500,
+                      child: charts.PieChart(
+                        _outData,
+                        animate: animate,
+                      ),
                     ),
                   ),
                 ),
-              ),
+                RotationTransition(
+                  turns: Tween(begin: 5.0, end: 0.0).animate(controller),
+                  child: Transform.rotate(
+                    angle: inAngle,
+                    child: Container(
+                      width: 200,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.black,
+                        ),
+                      ),
+                      child: charts.PieChart(
+                        _inData,
+                        animate: animate,
+                        layoutConfig: charts.LayoutConfig(
+                          topMarginSpec: charts.MarginSpec.fixedPixel(0),
+                          rightMarginSpec: charts.MarginSpec.fixedPixel(0),
+                          bottomMarginSpec: charts.MarginSpec.fixedPixel(0),
+                          leftMarginSpec: charts.MarginSpec.fixedPixel(0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -74,7 +105,8 @@ class _RoulettePageState extends State<RoulettePage>
                   onPressed: () {
                     controller.reset();
                     setState(() {
-                      angle = math.Random().nextInt(10).toDouble();
+                      outAngle = math.Random().nextInt(10).toDouble();
+                      inAngle = math.Random().nextInt(10).toDouble();
                     });
                   },
                 ),
@@ -87,10 +119,10 @@ class _RoulettePageState extends State<RoulettePage>
   }
 
   void _rouletteData() {
-    _series.addAll(
+    _outData.addAll(
       [
         charts.Series<Item, String>(
-          id: 'BudgetChart',
+          id: 'outter',
           domainFn: (Item item, _) => item.title,
           measureFn: (Item item, _) => item.ratio,
           colorFn: (Item item, _) => item.color,
@@ -109,7 +141,35 @@ class _RoulettePageState extends State<RoulettePage>
               title: sampleItems[2].title,
               ratio: sampleItems[2].ratio,
               color: sampleItems[2].color,
-            )
+            ),
+          ],
+        ),
+      ],
+    );
+
+    _inData.addAll(
+      [
+        charts.Series<Item, String>(
+          id: 'outter',
+          domainFn: (Item item, _) => item.title,
+          measureFn: (Item item, _) => item.ratio,
+          colorFn: (Item item, _) => item.color,
+          data: [
+            Item(
+              title: sampleItems[1].title,
+              ratio: sampleItems[1].ratio,
+              color: sampleItems[1].color,
+            ),
+            Item(
+              title: sampleItems[2].title,
+              ratio: sampleItems[2].ratio,
+              color: sampleItems[2].color,
+            ),
+            Item(
+              title: sampleItems[0].title,
+              ratio: sampleItems[0].ratio,
+              color: sampleItems[0].color,
+            ),
           ],
         ),
       ],
