@@ -11,21 +11,14 @@ class SwitchToggle extends StatefulWidget {
 
 class _SwitchToggleState extends State<SwitchToggle>
     with SingleTickerProviderStateMixin {
-  late AnimationController controller;
-  Alignment _alignment = Alignment.center;
-  bool _isLeft = false;
-  Color _color = Colors.red;
-  double _position = -55;
-  String _text = '内側';
+  var _alignment = Alignment.center;
+  var _isLeft = false;
+  var _color = Colors.red;
+  // (160 / 2) - (40 / 2) - 5 == 55 // 移動範囲 / 2 - 丸サイズ / 2 - マージン
+  var _position = -55.0;
+  var _text = '内側';
   @override
   void initState() {
-    controller = AnimationController(
-      duration: Duration(
-        seconds: 1,
-      ),
-      vsync: this,
-    );
-
     super.initState();
   }
 
