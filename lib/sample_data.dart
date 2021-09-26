@@ -1,4 +1,4 @@
-import 'package:roulette/item_model.dart';
+import 'package:roulette/model/item_model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 List<Item> sampleItems = [

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'dart:math' as math;
-import 'package:roulette/item_model.dart';
+import 'package:roulette/model/item_model.dart';
+import 'package:roulette/pages/settings/setting_page.dart';
 import 'package:roulette/sample_data.dart';
 
 class RoulettePage extends StatefulWidget {
@@ -44,6 +45,18 @@ class _RoulettePageState extends State<RoulettePage>
         title: Text(
           'ルーレット',
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<Widget>(
+                  builder: (_) => SettingPage(),
+                ),
+              );
+            },
+            icon: Icon(Icons.navigate_next),
+          ),
+        ],
       ),
       body: Container(
         child: Column(
@@ -93,28 +106,32 @@ class _RoulettePageState extends State<RoulettePage>
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  child: Text("go"),
-                  onPressed: () => controller.repeat(),
-                ),
-                ElevatedButton(
-                  child: Text("stop"),
-                  onPressed: () {
-                    controller.reset();
-                    setState(() {
-                      outAngle = math.Random().nextInt(10).toDouble();
-                      inAngle = math.Random().nextInt(10).toDouble();
-                    });
-                  },
-                ),
-              ],
-            ),
+            rouletteButton(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget rouletteButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        ElevatedButton(
+          child: Text('start'),
+          onPressed: () => controller.repeat(),
+        ),
+        ElevatedButton(
+          child: Text('stop'),
+          onPressed: () {
+            controller.reset();
+            setState(() {
+              outAngle = math.Random().nextInt(10).toDouble();
+              inAngle = math.Random().nextInt(10).toDouble();
+            });
+          },
+        ),
+      ],
     );
   }
 
