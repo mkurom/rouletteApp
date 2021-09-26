@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:roulette/roulette_page.dart';
+import 'package:roulette/pages/roulette/roulette_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
       home: RoulettePage(),
     );
   }
